@@ -1,0 +1,41 @@
+# Product Factory — initial skeleton
+# Modeled after camorazrushimoe/dev-crew
+
+services:
+  shared-memory:
+    image: redis:7-alpine
+    container_name: product-factory-shared-memory
+    networks: [crew]
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # Example agent service (repeat pattern for others)
+  # intake-classifier:
+  #   image: nousresearch/hermes-agent:latest   # or custom build
+  #   container_name: product-factory-intake-classifier
+  #   networks: [crew]
+  #   depends_on:
+  #     shared-memory:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./agents/intake-classifier/hermes-home:/opt/data
+  #     - ./agents/intake-classifier/skills:/opt/data/skills/product-factory:ro
+  #     - ./crew:/opt/crew:ro
+  #     - ./workspace:/workspace
+  #     - ./knowledge:/knowledge
+  #   ports: ["8651:8644"]
+  #   environment:
+  #     - HERMES_WRITE_SAFE_ROOT=/opt/data:/workspace:/knowledge
+  #   command: ["gateway", "run"]
+
+networks:
+  crew:
+    driver: bridge
+  # analysis-env:          # optional later
+  #   driver: bridge
+  #   name: product-factory-analysis-env
