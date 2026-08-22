@@ -1,0 +1,10 @@
+.env
+crew/agents.json
+workspace/*
+!workspace/.gitkeep
+knowledge/projects/*
+!knowledge/projects/_template/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
