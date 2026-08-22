@@ -1,0 +1,48 @@
+# Code-aware Pipeline
+# Used when we have (or will get) access to source code, but not necessarily full data + people yet.
+
+name: code-aware
+description: Intake + code & architecture understanding → product direction
+
+stages:
+  - name: classify
+    agent: intake-classifier
+    required: true
+
+  - name: ingest-context
+    agent: context-ingester
+    depends_on: [classify]
+
+  - name: understand-system
+    parallel: true
+    agents:
+      - codebase-analyst
+      - architecture-analyst
+      - domain-process-analyst
+    depends_on: [ingest-context]
+
+  - name: frame-problems
+    agent: discovery
+    depends_on: [understand-system]
+
+  - name: collect-constraints
+    agent: constraints
+    depends_on: [frame-problems]
+
+  - name: shape-solutions
+    agent: solution-shaper
+    depends_on: [frame-problems, collect-constraints]
+
+  - name: write-spec
+    agent: spec-writer
+    depends_on: [shape-solutions]
+
+  - name: review
+    agent: critic
+    depends_on: [write-spec]
+    human_gate: true
+
+  - name: update-wiki
+    agent: knowledge-memory
+    depends_on: [review]
+    always_run: true

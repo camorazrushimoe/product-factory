@@ -1,0 +1,47 @@
+# Support-driven Pipeline
+# Starts from user pain visible in support tickets / complaints.
+
+name: support-driven
+description: From support pain and usage signals to targeted product improvements
+
+stages:
+  - name: classify
+    agent: intake-classifier
+    required: true
+
+  - name: ingest-context
+    agent: context-ingester
+    depends_on: [classify]
+
+  - name: understand-usage
+    parallel: true
+    agents:
+      - data-usage-analyst
+      - domain-process-analyst
+    depends_on: [ingest-context]
+
+  - name: frame-problems
+    agent: discovery
+    depends_on: [understand-usage]
+
+  - name: collect-constraints
+    agent: constraints
+    depends_on: [frame-problems]
+
+  - name: shape-solutions
+    agent: solution-shaper
+    depends_on: [frame-problems, collect-constraints]
+
+  - name: write-spec
+    agent: spec-writer
+    depends_on: [shape-solutions]
+
+  - name: review
+    agent: critic
+    depends_on: [write-spec]
+    human_gate: true
+
+  - name: update-wiki
+    agent: knowledge-memory
+    depends_on: [review]
+    always_run: true

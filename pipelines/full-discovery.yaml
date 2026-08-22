@@ -1,0 +1,54 @@
+# Full Discovery Pipeline
+# Used when we have (or will get) access to code, data, and people.
+
+name: full-discovery
+description: Deep product discovery leading to engineering-ready Product Spec
+
+stages:
+  - name: classify
+    agent: intake-classifier
+    required: true
+
+  - name: ingest-context
+    agent: context-ingester
+    depends_on: [classify]
+
+  - name: understand-system
+    parallel: true
+    agents:
+      - codebase-analyst
+      - data-usage-analyst
+      - architecture-analyst
+      - domain-process-analyst
+    depends_on: [ingest-context]
+
+  - name: human-layer
+    agent: human-insight
+    depends_on: [understand-system]
+    human_gate: true          # wait for meeting notes / human input
+
+  - name: frame-problems
+    agent: discovery
+    depends_on: [human-layer, understand-system]
+
+  - name: collect-constraints
+    agent: constraints
+    depends_on: [frame-problems]
+
+  - name: shape-solutions
+    agent: solution-shaper
+    depends_on: [frame-problems, collect-constraints]
+
+  - name: write-spec
+    agent: spec-writer
+    depends_on: [shape-solutions]
+
+  - name: review
+    agent: critic
+    depends_on: [write-spec]
+    human_gate: true          # final human review before marking final
+
+  - name: update-wiki
+    agent: knowledge-memory
+    depends_on: [review]
+    always_run: true

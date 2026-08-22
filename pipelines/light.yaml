@@ -1,0 +1,31 @@
+# Light Pipeline — first contact / only business wish available
+
+name: light
+description: Quick first-pass when we only have the initial request from the client
+
+stages:
+  - name: classify
+    agent: intake-classifier
+    required: true
+
+  - name: frame
+    agent: discovery
+    depends_on: [classify]
+
+  - name: shape
+    agent: solution-shaper
+    depends_on: [frame]
+
+  - name: write
+    agent: spec-writer
+    depends_on: [shape]
+
+  - name: review
+    agent: critic
+    depends_on: [write]
+    human_gate: true
+
+  - name: update-wiki
+    agent: knowledge-memory
+    depends_on: [review]
+    always_run: true
