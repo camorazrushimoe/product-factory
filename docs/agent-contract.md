@@ -1,0 +1,43 @@
+# Agent Contract
+
+Every agent in the Product Factory must obey this contract.
+
+## Identity
+
+- Has a unique name matching the folder under `agents/`.
+- Has a `hermes-home/SOUL.md` that defines its mission, responsibilities, style, and output events.
+- Runs as an isolated Hermes process inside its own Docker container.
+
+## Communication
+
+1. Receives work either:
+   - via its webhook door (from crew-send or another agent), or
+   - by subscribing to relevant events on the Redis bus.
+2. Publishes results as structured events defined in `bus/action-schema.json`.
+3. Puts rich artifacts (long reports, maps, drafts) into `workspace/` or the project wiki and only puts links + summaries on the bus.
+
+## Inputs & Outputs
+
+- Must declare (in SOUL or skills) what inputs it expects.
+- Must produce the events listed in its SOUL.
+- Must be idempotent where practical (re-running with same input should not create chaos).
+
+## Human gates
+
+When a pipeline stage is marked `human_gate: true`, the agent must stop and publish `human.gate.required`. It continues only after explicit human approval or additional input.
+
+## Knowledge
+
+- May read any project wiki.
+- May propose updates following `docs/wiki-protocol.md`.
+- Must not delete wiki history without leaving a trace.
+
+## Failure behaviour
+
+- On error publish `error` event with clear message and context.
+- Prefer partial useful output + open questions over silent failure or hallucination.
+
+## Skills
+
+Agent-specific skills live in `agents/<name>/skills/`.  
+They are the only place for specialized tools, scripts, or prompt fragments that belong exclusively to that agent.

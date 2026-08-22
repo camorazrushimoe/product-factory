@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Factory Bus Action Schema",
+  "description": "Events and structured messages that agents publish/subscribe to on the Redis bus",
+  "type": "object",
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": [
+        "intake.received",
+        "intake.classified",
+        "context.ready",
+        "code.analyzed",
+        "data.analyzed",
+        "domain.mapped",
+        "architecture.mapped",
+        "human.insights.ready",
+        "problem.framed",
+        "opportunities.ready",
+        "constraints.collected",
+        "solutions.shaped",
+        "spec.drafted",
+        "spec.reviewed",
+        "spec.final",
+        "wiki.updated",
+        "pipeline.started",
+        "pipeline.finished",
+        "human.gate.required",
+        "error"
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Client or project identifier (used for wiki scoping)"
+    },
+    "intake_id": {
+      "type": "string",
+      "description": "Unique ID of the current intake request"
+    },
+    "from_agent": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Structured output of the agent"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "links": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to files in workspace/ or knowledge/ that contain rich output"
+    }
+  },
+  "required": ["event", "project_id", "intake_id", "from_agent", "timestamp"]
+}

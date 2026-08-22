@@ -1,0 +1,69 @@
+{
+  "agents": {
+    "intake-classifier": {
+      "door": "http://intake-classifier:8644",
+      "host_port": 8651,
+      "description": "Normalizes and classifies raw business intake"
+    },
+    "context-ingester": {
+      "door": "http://context-ingester:8644",
+      "host_port": 8652,
+      "description": "Builds clean Context Pack from raw sources"
+    },
+    "codebase-analyst": {
+      "door": "http://codebase-analyst:8644",
+      "host_port": 8653,
+      "description": "Understands system through source code"
+    },
+    "data-usage-analyst": {
+      "door": "http://data-usage-analyst:8644",
+      "host_port": 8654,
+      "description": "Analyses real usage from data and logs"
+    },
+    "domain-process-analyst": {
+      "door": "http://domain-process-analyst:8644",
+      "host_port": 8655,
+      "description": "Reconstructs domain model and AS-IS processes"
+    },
+    "architecture-analyst": {
+      "door": "http://architecture-analyst:8644",
+      "host_port": 8656,
+      "description": "High-level architecture and technical constraints"
+    },
+    "discovery": {
+      "door": "http://discovery:8644",
+      "host_port": 8657,
+      "description": "Frames real problems and opportunities"
+    },
+    "human-insight": {
+      "door": "http://human-insight:8644",
+      "host_port": 8658,
+      "description": "Synthesizes insights from people and meetings"
+    },
+    "constraints": {
+      "door": "http://constraints:8644",
+      "host_port": 8659,
+      "description": "Collects all hard and soft constraints"
+    },
+    "solution-shaper": {
+      "door": "http://solution-shaper:8644",
+      "host_port": 8660,
+      "description": "Proposes solution options with trade-offs"
+    },
+    "spec-writer": {
+      "door": "http://spec-writer:8644",
+      "host_port": 8661,
+      "description": "Writes the final Product Specification"
+    },
+    "critic": {
+      "door": "http://critic:8644",
+      "host_port": 8662,
+      "description": "Quality gate for the Product Spec"
+    },
+    "knowledge-memory": {
+      "door": "http://knowledge-memory:8644",
+      "host_port": 8663,
+      "description": "Maintains the per-project LLM Wiki"
+    }
+  }
+}
