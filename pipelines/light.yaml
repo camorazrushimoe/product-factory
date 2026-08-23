@@ -4,28 +4,24 @@ name: light
 description: Quick first-pass when we only have the initial request from the client
 
 stages:
-  - name: classify
-    agent: intake-classifier
+  - name: intake-and-frame
+    agent: technical-product-manager
     required: true
 
-  - name: frame
-    agent: discovery
-    depends_on: [classify]
+  - name: research
+    agent: product-researcher
+    depends_on: [intake-and-frame]
 
-  - name: shape
-    agent: solution-shaper
-    depends_on: [frame]
-
-  - name: write
-    agent: spec-writer
-    depends_on: [shape]
+  - name: shape-and-spec
+    agent: technical-product-manager
+    depends_on: [research]
 
   - name: review
-    agent: critic
-    depends_on: [write]
+    agent: adversarial-reviewer
+    depends_on: [shape-and-spec]
     human_gate: true
 
-  - name: update-wiki
-    agent: knowledge-memory
+  - name: finalize
+    agent: technical-product-manager
     depends_on: [review]
     always_run: true

@@ -3,108 +3,47 @@
 ## Goals
 
 - Turn any business intake into a high-quality Product Spec.
-- Support progressive deepening (from pure wish → full code + data + people understanding).
+- Support progressive deepening of understanding.
 - Keep agents isolated (Docker + Hermes) while allowing rich collaboration.
-- Maintain compounding project knowledge (LLM Wiki style).
-- Stay close to the proven pattern of [dev-crew](https://github.com/camorazrushimoe/dev-crew).
+- Maintain compounding project knowledge (LLM Wiki).
+- Use clear professional roles instead of many tiny specialists.
+
+## Roles
+
+### 1. Technical Product Manager
+Owns the outcome: intake → constraints → solution options → Product Spec → LLM Wiki.
+
+### 2. Product Researcher
+Owns discovery of real problems, opportunities and human insights.
+
+### 3. System & Domain Analyst
+Owns the factual AS-IS understanding of the system and domain (code, architecture, processes, usage).
+
+### 4. Adversarial Reviewer
+Owns quality. Challenges weak thinking and protects the final Spec.
 
 ## Components
 
-### 1. Agents (isolated Hermes containers)
+- **Agents**: 4 isolated Hermes containers, one per role.
+- **Shared Message Bus**: Redis (`bus/action-schema.json`).
+- **Knowledge**: LLM Wiki per project, owned by Technical Product Manager.
+- **Pipelines**: Declarative sequences of the 4 roles (`pipelines/`).
+- **Entry point**: `crew/crew-send.py` + agent registry.
 
-Each agent:
-- Has its own Docker service.
-- Has private `hermes-home/` (config, SOUL, local state).
-- Has private `skills/`.
-- Listens on a webhook “door”.
-- Can publish/subscribe to the shared Redis bus.
-- Can read/write the shared `workspace/` and the project’s LLM Wiki (with permissions).
+## Typical Full Discovery flow
 
-### 2. Shared Message Bus (`bus/`)
+1. Technical Product Manager — intake & initial framing
+2. System & Domain Analyst — deep AS-IS understanding
+3. Product Researcher — problems, opportunities, human insights (human gate possible)
+4. Technical Product Manager — solution options + Product Spec
+5. Adversarial Reviewer — review (human gate)
+6. Technical Product Manager — finalize Spec + update wiki
 
-- Redis.
-- Schema: `bus/action-schema.json`.
-- Used for:
-  - Task hand-off
-  - Event broadcasting (`intake.classified`, `code.analyzed`, `problem.framed`, `spec.ready`, …)
-  - Structured outputs between agents
+## Memory
 
-### 3. Knowledge Layer (`knowledge/`)
-
-LLM Wiki pattern (Karpathy):
-
-- One folder per client/project: `knowledge/projects/<project-id>/`
-- Agents do not just RAG — they **maintain** the wiki:
-  - create/update entity pages
-  - link related concepts
-  - note contradictions
-  - keep an evolving synthesis
-- `knowledge-memory` agent is the primary steward, but any agent can propose updates.
-
-### 4. Pipelines (`pipelines/`)
-
-Declarative or code-defined sequences of agents.
-
-Examples:
-- `light.yaml` — first contact
-- `code-aware.yaml`
-- `full-discovery.yaml`
-- `support-pain.yaml`
-
-Orchestrator (in `crew/`) selects or composes a pipeline based on:
-- What data is already available
-- Classification from Intake Classifier
-- Human overrides
-
-### 5. Entry Point & Orchestration (`crew/`)
-
-- `crew-send.py` — human/manager entry point (HMAC-signed like in dev-crew).
-- Agent registry (`agents.json` / `agents.example.json`).
-- Simple orchestrator that can run a pipeline and wait for intermediate human gates.
-
-### 6. Environments
-
-For now we keep it lighter than full engineering staging:
-
-- `crew` network — agents + bus talk to each other.
-- Optional `analysis-env` network — for agents that need to spin temporary analysis tools (code parsers, local DBs, etc.).
-- Most agents can do their work inside their own container + mounted volumes.
-
-If later we need a full “dev cluster” for research agents to deploy temporary pipelines — we can add it the same way dev-crew does with `dev-env` / `staging-env`.
-
-## Data flow (typical Full Discovery)
-
-1. Human → `crew-send.py` → **intake-classifier**
-2. Classifier publishes `intake.classified` + structured intake
-3. Orchestrator starts pipeline → **context-ingester**
-4. Parallel or sequential:
-   - **codebase-analyst**
-   - **data-usage-analyst**
-   - **architecture-analyst**
-   - **domain-process-analyst**
-5. Results go to bus + wiki updates
-6. **human-insight** (after meetings)
-7. **discovery** synthesizes real problems & opportunities
-8. **constraints**
-9. **solution-shaper**
-10. **spec-writer** produces draft
-11. **critic** reviews
-12. Human gate → final Spec
-13. **knowledge-memory** folds everything useful into the project wiki
-
-## Memory strategy summary
-
-| Type              | Technology          | Scope              | Purpose                          |
-|-------------------|---------------------|--------------------|----------------------------------|
-| Inter-agent       | Redis bus           | Current run        | Coordination & structured hand-off |
-| Project knowledge | Markdown LLM Wiki   | Per client/project | Compounding understanding        |
-| Agent private     | hermes-home         | Per agent          | Local state, preferences         |
-| Temporary         | workspace/          | Current intake     | Scratch files, drafts            |
-
-## Open questions (to decide later)
-
-- Exact message schema on the bus
-- How strictly we enforce human gates
-- Whether Codebase Analyst gets Docker-out-of-Docker or only volume mounts
-- Token / cost tracking per agent (see `tokens/`)
-- Integration with Linear / GitHub Issues for tracking intakes
+| Type | Technology | Owner |
+|------|------------|-------|
+| Inter-agent | Redis bus | all |
+| Project knowledge | Markdown LLM Wiki | Technical Product Manager |
+| Agent private | hermes-home | each agent |
+| Temporary | workspace/ | current intake |
