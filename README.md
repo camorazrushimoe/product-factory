@@ -4,6 +4,10 @@
 
 Inspired by [dev-crew](https://github.com/camorazrushimoe/dev-crew) (isolated Hermes agents in Docker + shared message bus) and Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern.
 
+> **Agent Office:** this repo is also a **team template** under [Agent Office](https://github.com/camorazrushimoe/agent-office).  
+> Multiple Spec instances can be composed from pinned refs of this template.  
+> See [docs/office-template.md](docs/office-template.md) for the Office-compatible contract (shared bus, lifecycle, spec handoff via Office).
+
 ## Core Idea
 
 **Input:** any business request (wish, pain, modernization, support-driven need…)  
@@ -59,7 +63,7 @@ product-factory/
 ├── knowledge/          # LLM Wiki (per project)
 ├── pipelines/
 ├── openspec/           # Product Spec template
-├── docs/
+├── docs/               # incl. office-template.md — Agent Office contract
 ├── workspace/
 └── docker-compose.yml
 ```
@@ -74,3 +78,5 @@ See `docs/IMPLEMENTATION-ROADMAP.md` for next implementation steps.
 ---
 
 Built to learn Product Management by building the tools a strong Technical Product Manager would use.
+
+See also: [Agent Office](https://github.com/camorazrushimoe/agent-office) · [Lab Crew](https://github.com/camorazrushimoe/lab-crew) · [Dev Crew](https://github.com/camorazrushimoe/dev-crew)
