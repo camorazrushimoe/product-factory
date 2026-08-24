@@ -9,6 +9,11 @@ stages:
     agent: technical-product-manager
     required: true
 
+  - name: discovery-gate
+    agent: technical-product-manager
+    depends_on: [intake]
+    human_gate: true
+
   - name: understand-system
     agent: system-domain-analyst
     depends_on: [intake]
