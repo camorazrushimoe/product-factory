@@ -25,13 +25,19 @@ The Intake Brief SHALL contain:
 
 1. **Understanding** — how the TPM understood the request (2–5 sentences)
 2. **What was checked** — Linear project state, repo surface scan, external
-   facts found, each with provenance
+   facts found, each with provenance and an as-of date
 3. **Questions for stakeholders** — each as: question + why it matters + how
    the answer changes the work (so the operator can relay them verbatim)
 4. **Depth options** — 2–3 scoped options (e.g. answer-only / light /
    code-aware) with expected effort and what each would produce
-5. **Linear proposal** — existing project reused or new project proposed,
+5. **Recommendation** — which option the TPM recommends and why
+6. **Linear proposal** — existing project reused or new project proposed,
    with ticket list
+
+The Linear ticket comment SHALL be the canonical copy of the brief; the chat
+reply and bus event are mirrors. A brief states its validity ("reflects repo/
+Linear state as of <date>"); work resuming after material changes SHALL
+refresh the affected sections.
 
 #### Scenario: brief ends the turn
 
@@ -43,17 +49,21 @@ The Intake Brief SHALL contain:
 
 ### Requirement: Escalation threshold (cheap-work bypass)
 
-If the predicted work is trivially cheap — answering a question, a single
-lookup, a one-stage light task — the TPM MAY skip the gate: do the work, then
-report. The gate is mandatory whenever the forecast exceeds ~1 stage of light
-work, anything is ambiguous, stakeholder input is needed, or cost drivers are
-unknown. When in doubt, use the gate.
+If the predicted work is trivially cheap — a single lookup or a short factual
+answer, bounded by the same ~15 minutes of tool work as triage — the TPM MAY
+skip the gate: do the work, then report. The gate is mandatory whenever the
+forecast exceeds that bound, anything is ambiguous, stakeholder input is
+needed, or cost drivers are unknown. When in doubt, use the gate. Even on
+bypass, the request SHALL still be tracked in Linear: an `INVESTIGATION`
+ticket is created and immediately closed with the outcome as its comment.
 
 #### Scenario: micro-request bypasses the gate
 
-- **WHEN** a request is a single lookup or a short factual answer
+- **WHEN** a request is a single lookup or a short factual answer within the
+  timebox
 - **THEN** the TPM MAY complete it immediately and report
 - **AND** the report still includes what was done and what was assumed
+- **AND** an `INVESTIGATION` ticket records the outcome and is closed
 
 ### Requirement: Linear tracks every request
 

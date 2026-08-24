@@ -12,6 +12,7 @@ stages:
   - name: discovery-gate
     agent: technical-product-manager
     depends_on: [intake]
+    required: true
     human_gate: true
 
   - name: understand-system

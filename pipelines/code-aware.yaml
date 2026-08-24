@@ -12,6 +12,7 @@ stages:
   - name: discovery-gate
     agent: technical-product-manager
     depends_on: [intake]
+    required: true
     human_gate: true
 
   - name: understand-system
@@ -24,7 +25,7 @@ stages:
 
   - name: shape-and-spec
     agent: technical-product-manager
-    depends_on: [research, understand-system]
+    depends_on: [research, understand-system, discovery-gate]
 
   - name: review
     agent: adversarial-reviewer

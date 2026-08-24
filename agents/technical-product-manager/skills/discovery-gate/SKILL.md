@@ -20,24 +20,28 @@ Deep work starts only after the operator replies.
 Structure:
 
 ```
-INTAKE BRIEF — <project>
+INTAKE BRIEF — <project>            (reflects repo/Linear state as of <date>)
 1. UNDERSTANDING      how I understood the request (2–5 sentences)
 2. WHAT I CHECKED     Linear state / repo surface / external facts (+sources)
 3. QUESTIONS FOR YOU  question + why it matters + how the answer changes work
 4. DEPTH OPTIONS      option A/B/C: what I'd do, effort, expected output
-5. LINEAR             reuse project X | propose new project Y + INVESTIGATION ticket
+5. RECOMMENDATION     my pick + why (one line)
+6. LINEAR             reuse project X | propose new project Y + INVESTIGATION ticket
 ```
 
 Publish `intake.brief` on the office bus, post the brief as your reply,
-create/update the `INVESTIGATION` Linear ticket with the brief as a comment.
+create/update the `INVESTIGATION` Linear ticket — the ticket comment is the
+CANONICAL copy of the brief; chat reply and bus event are mirrors.
 
 Then STOP. Do not run understand-system / research / shape-and-spec, do not
 delegate them, until the operator replies in this session.
 
 ### 3. Cheap-work bypass
-If the request is trivially cheap (one lookup, one short answer): just do it
-and report what was done and assumed. Gate is mandatory when anything is
-ambiguous, multi-stage, needs stakeholder input, or cost drivers are unknown.
+If the request is trivially cheap — a single lookup or short factual answer
+within the same ~15-minute timebox: just do it, report what was done and
+assumed, and record it as an INVESTIGATION ticket closed with the outcome.
+Gate is mandatory when anything is ambiguous, exceeds the timebox, needs
+stakeholder input, or has unknown cost drivers. When in doubt, use the gate.
 
 ## Anti-patterns (violations)
 - Running the full pipeline "to save a roundtrip"

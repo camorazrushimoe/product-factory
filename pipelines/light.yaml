@@ -11,6 +11,7 @@ stages:
   - name: discovery-gate
     agent: technical-product-manager
     depends_on: [intake-and-frame]
+    required: true
     human_gate: true
 
   - name: research
