@@ -1,4 +1,14 @@
 .env
+.env.*
+!.env.example
+
+# Rendered per-agent config (contains resolved secrets) + runtime state.
+# hermes-home is foundation: only SOUL.md and config.yaml.template are tracked.
+agents/*/hermes-home/config.yaml
+agents/*/hermes-home/*
+!agents/*/hermes-home/SOUL.md
+!agents/*/hermes-home/config.yaml.template
+
 crew/agents.json
 workspace/*
 !workspace/.gitkeep

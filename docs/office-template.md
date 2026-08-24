@@ -73,14 +73,20 @@ This repo MAY support standalone operation (local Redis, always-on agents) for d
 
 ## Implementation roadmap (spec → code)
 
-Product Factory is at design/Phase 0 for Docker runtime. When implementing Phases 1–2, Office-compatible mode should be the default design:
+Done (Office-attached compose is now the default — see `docker-compose.yml`):
 
-- [ ] Compose without a private `shared-memory` service when `OFFICE_REDIS_URL` is set
-- [ ] Lifecycle controller + agent `restart: "no"`
+- [x] Compose without a private `shared-memory` service — external network
+      `agent-office-crew`, no local Redis, `OFFICE_BUS_URL` env.
+- [x] Agent `restart: "no"` (controller-managed).
+- [x] Env vars documented for Office attach (`TEAM_NAME`, `OFFICE_BUS_URL`,
+      `DOOR_SECRET_*`, `CUSTOM_API_KEY`) — see `.env.example`.
+
+Still pending (next PRs):
+
+- [ ] Lifecycle controller service (idle stop + wake on demand)
 - [ ] Wake-aware door client
 - [ ] Team-qualified actors on the bus when `TEAM_NAME` is set
 - [ ] `spec.ready` handoff event aimed at Office (artifact pointer, not full text)
-- [ ] Env vars documented for Office attach (bus, team name)
 - [ ] Align `human.gate.required` events with Office escalation surface
 
 ## Versioning
