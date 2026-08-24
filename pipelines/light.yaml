@@ -8,9 +8,15 @@ stages:
     agent: technical-product-manager
     required: true
 
+  - name: discovery-gate
+    agent: technical-product-manager
+    depends_on: [intake-and-frame]
+    required: true
+    human_gate: true
+
   - name: research
     agent: product-researcher
-    depends_on: [intake-and-frame]
+    depends_on: [discovery-gate]
 
   - name: shape-and-spec
     agent: technical-product-manager
