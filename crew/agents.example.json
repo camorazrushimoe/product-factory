@@ -1,24 +1,26 @@
 {
-  "agents": {
-    "technical-product-manager": {
-      "door": "http://technical-product-manager:8644",
-      "host_port": 8651,
-      "description": "Owns intake, constraints, solution shaping, Product Spec and LLM Wiki"
-    },
-    "product-researcher": {
-      "door": "http://product-researcher:8644",
-      "host_port": 8652,
-      "description": "Discovers real problems, opportunities and human insights"
-    },
-    "system-domain-analyst": {
-      "door": "http://system-domain-analyst:8644",
-      "host_port": 8653,
-      "description": "Owns technical and domain truth about the current system"
-    },
-    "adversarial-reviewer": {
-      "door": "http://adversarial-reviewer:8644",
-      "host_port": 8654,
-      "description": "Quality gate and adversarial review of the Product Spec"
-    }
+  "technical-product-manager": {
+    "host_url": "http://localhost:8651/webhooks/inbox",
+    "container_url": "http://product-factory-technical-product-manager:8644/webhooks/inbox",
+    "secret": "ЗАМЕНИ_НА_СЕКРЕТ_АГЕНТА",
+    "wake_hint": "product-factory:technical-product-manager"
+  },
+  "product-researcher": {
+    "host_url": "http://localhost:8652/webhooks/inbox",
+    "container_url": "http://product-factory-product-researcher:8644/webhooks/inbox",
+    "secret": "ЗАМЕНИ_НА_СЕКРЕТ_АГЕНТА",
+    "wake_hint": "product-factory:product-researcher"
+  },
+  "system-domain-analyst": {
+    "host_url": "http://localhost:8653/webhooks/inbox",
+    "container_url": "http://product-factory-system-domain-analyst:8644/webhooks/inbox",
+    "secret": "ЗАМЕНИ_НА_СЕКРЕТ_АГЕНТА",
+    "wake_hint": "product-factory:system-domain-analyst"
+  },
+  "adversarial-reviewer": {
+    "host_url": "http://localhost:8654/webhooks/inbox",
+    "container_url": "http://product-factory-adversarial-reviewer:8644/webhooks/inbox",
+    "secret": "ЗАМЕНИ_НА_СЕКРЕТ_АГЕНТА",
+    "wake_hint": "product-factory:adversarial-reviewer"
   }
 }
